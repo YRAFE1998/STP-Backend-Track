@@ -1,0 +1,8 @@
+package travelsim;
+
+public enum ROLES{
+	PORT_OFFICER,
+	IMMIGRATION_OFFICER,
+	HEALTH_OFFICER,
+	PCR_CONDUCTOR
+}

@@ -1,9 +1,12 @@
-package home;
-import java.sql.Date;
+package entities;
+
+import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -12,15 +15,24 @@ import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import javax.ws.rs.Path;
 
 @Entity
 @Table(name = "employees")
+@Path("employee")
 public class Employee {
 	@Id
     @GeneratedValue(strategy=GenerationType.AUTO)
-	@Column(name = "employeeId")
+	@Column(name = "id")
 	private long id;
 	
+	@Override
+	public String toString() {
+		return "Employee [id=" + id + ", firstName=" + firstName + ", lastName=" + lastName + ", dept=" + dept
+				+ ", email=" + email + ", phoneNumber=" + phoneNumber + ", nationalID=" + nationalID + ", role=" + role
+				+ "]";
+	}
+
 	@Column(name = "firstName",length=30, nullable=false, unique=false)
 	private String firstName;
 	
@@ -28,7 +40,7 @@ public class Employee {
 	private String lastName;
 	
 	
-	@Column(name = "dept", length = 30, nullable = false, unique = false)
+	@Column(name = "department", length = 50, nullable = false, unique = false)
 	private String dept;
 	
 	@Column(name="email", length = 50, nullable = false, unique = true)
@@ -41,33 +53,49 @@ public class Employee {
 	@Column(name="nationalID", length = 14, nullable = false, unique = true)
 	private String nationalID;
 	
-	@Column(name = "role", length = 30, nullable = false, unique = false)
+	@Column(name = "employeeRole", length = 50, nullable = false, unique = false)
 	private String role;
 	
+	@OneToMany
+	private List<Project> managedProjects;
 	
-	@OneToMany(mappedBy = "projects")
-	private Set<Projects> projects;
+	
 	
 	@ManyToMany
 	@JoinTable(
 			name = "employee_workson_project",
-			joinColumns = @JoinColumn(name="projectId"),
-			inverseJoinColumns = @JoinColumn(name="employeeId")
+			joinColumns = @JoinColumn(name="projectID"),
+			inverseJoinColumns = @JoinColumn(name="employeeID")
 			)
-	Set<Projects> employee_works_on_project;
+	private Set<Project> employee_works_on_project = new HashSet();
 	
 		
 
+	public Set<Project> getEmployee_works_on_project() {
+		return employee_works_on_project;
+	}
+
+	public void addProjecttoEmployee(Project employee_works_on_project) {
+		this.employee_works_on_project.add(employee_works_on_project);
+	}
+
+
+	
 	public Employee() {
 		
 	}
 
-	public Employee(Long id, String firstName, String lastName, String dept) {
-		this.setId(id);
-		this.setFirstName(firstName);
-		this.setLastName(lastName);
-		this.setDept(dept);
+	public Employee(long id, String firstName, String lastName, String dept, String email,
+			String nationalID, String role) {
+		this.id = id;
+		this.firstName = firstName;
+		this.lastName = lastName;
+		this.dept = dept;
+		this.email = email;
+		this.nationalID = nationalID;
+		this.role = role;
 	}
+
 
 	public long getId() {
 		return id;
@@ -99,7 +127,5 @@ public class Employee {
 	public void setDept(String dept) {
 		this.dept = dept;
 	}
-	
-	
 	
 }

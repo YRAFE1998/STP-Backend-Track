@@ -1,0 +1,11 @@
+-------------------------------------------------------------------------------
+Test set: application.model.MovieRepositoryTest
+-------------------------------------------------------------------------------
+Tests run: 7, Failures: 1, Errors: 0, Skipped: 3, Time elapsed: 10.57 s <<< FAILURE! - in application.model.MovieRepositoryTest
+recommendMovie  Time elapsed: 0.213 s  <<< FAILURE!
+java.lang.AssertionError: 
+
+Expected: is <[application.model.entities.Movie@62d6ac]>
+     but: was <[]>
+	at application.model.MovieRepositoryTest.recommendMovie(MovieRepositoryTest.java:125)
+

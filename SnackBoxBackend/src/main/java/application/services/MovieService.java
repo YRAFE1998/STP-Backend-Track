@@ -20,7 +20,7 @@ import java.util.stream.Collectors;
 public class MovieService {
 
     @Autowired
-    public MovieRepository movieRepository;
+    private MovieRepository movieRepository;
 
     @Autowired
     private UserRepository userRepository;

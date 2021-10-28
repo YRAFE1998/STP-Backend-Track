@@ -2,6 +2,7 @@ package application.model.entities;
 
 import application.model.ResponseData;
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 
 import javax.persistence.*;
@@ -14,6 +15,7 @@ import javax.persistence.*;
 @Table(name = "users_rate_movies")
 public class Rating implements ResponseData {
 
+    @JsonIgnore
     @EmbeddedId
     RatingKey id;
 

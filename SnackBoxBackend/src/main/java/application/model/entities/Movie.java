@@ -2,6 +2,7 @@ package application.model.entities;
 
 import application.model.ResponseData;
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 
 import javax.persistence.*;
@@ -72,9 +73,12 @@ public class Movie implements ResponseData {
     )
     private List<String> languages= new ArrayList<String>();
 
+    @JsonIgnore
     @OneToMany(mappedBy = "movie")
     Set<Rating> ratings = new HashSet<>();
 
+
+    @JsonIgnore
     @ManyToMany(cascade = { CascadeType.ALL })
     @JoinTable(
             name = "user_flag_movies",

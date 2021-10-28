@@ -4,7 +4,9 @@ import application.model.MovieRepository;
 import application.model.ResponseBuilder;
 import application.model.entities.Movie;
 import application.model.requests.MovieEdit;
-import net.bytebuddy.dynamic.DynamicType;
+import application.model.responses.FlaggedMovieResponse;
+import org.hamcrest.CoreMatchers;
+import org.hamcrest.core.*;
 import org.hamcrest.core.Is;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
@@ -86,7 +88,7 @@ class MovieServiceTest {
         movieService.getAllMovies(2);
         ArgumentCaptor<Integer> argument1 = ArgumentCaptor.forClass(Integer.class);
         verify(movieRepository).getMoviesPaginated(argument1.capture());
-        assertEquals(2,(int) argument1.getValue());
+        assertEquals(10,(int) argument1.getValue());
     }
 
     @Test
@@ -119,7 +121,7 @@ class MovieServiceTest {
         movieService.getTopMovies(2);
         ArgumentCaptor<Integer> argument1 = ArgumentCaptor.forClass(Integer.class);
         verify(movieRepository).getTopMovies(argument1.capture());
-        assertEquals(2,(int) argument1.getValue());
+        assertEquals(10,(int) argument1.getValue());
     }
 
     @Test
@@ -144,9 +146,10 @@ class MovieServiceTest {
 
     @Test
     void CallsGetFlaggedMoviesgetFlaggedMovies() {
+        FlaggedMovieResponse m1Flagged = new FlaggedMovieResponse(m1.getId(),m1.getName(),m1.getFlaggedUsers());
         when(movieRepository.getFlaggedMovies()).thenReturn(Arrays.asList(m1));
-        ResponseBuilder<Movie> moviesResponseBuilder = movieService.getFlaggedMovies();
-        assertThat(moviesResponseBuilder.getData(),Is.is(Arrays.asList(m1)));
+        ResponseBuilder<FlaggedMovieResponse> flaggedMovieResponseResponseBuilder = movieService.getFlaggedMovies();
+        assertThat(flaggedMovieResponseResponseBuilder.getData().get(0).getMovieId(), CoreMatchers.is(m1Flagged.getMovieId()));
 
     }
 

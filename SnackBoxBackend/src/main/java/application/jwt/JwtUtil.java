@@ -1,9 +1,7 @@
 package application.jwt;
 
 import application.model.UserDetails;
-import io.jsonwebtoken.Claims;
-import io.jsonwebtoken.Jwts;
-import io.jsonwebtoken.SignatureAlgorithm;
+import io.jsonwebtoken.*;
 import org.springframework.context.annotation.Bean;
 import org.springframework.stereotype.Service;
 
@@ -35,7 +33,6 @@ public class JwtUtil {
     }
 
     private Boolean isTokenExpired(String token) {
-        System.out.println("isToken Expired" + extractExpiration(token).before(new Date()));
         return extractExpiration(token).before(new Date());
     }
 
@@ -53,6 +50,7 @@ public class JwtUtil {
 
     public Boolean validateToken(String token, UserDetails userDetails) {
         final String username = extractUsername(token);
+
         return (username.equals(userDetails.getUsername()) && !isTokenExpired(token));
     }
 

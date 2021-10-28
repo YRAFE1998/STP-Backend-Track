@@ -6,10 +6,9 @@ import application.model.TMDBResponses.GenresResponse;
 import application.model.TMDBResponses.TMDBMovie;
 import application.model.TMDBResponses.TMDBResponse;
 import application.model.entities.Movie;
-import application.model.entities.User;
 import application.model.requests.MovieEdit;
+import application.model.responses.FlaggedMovieResponse;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
@@ -38,14 +37,14 @@ public class MovieService {
     }
 
     public List<Movie> getAllMovies(int page) throws IndexOutOfBoundsException{
-        List<Movie> movies = movieRepository.getMoviesPaginated((page-1)*2);
+        List<Movie> movies = movieRepository.getMoviesPaginated((page-1)*10);
         if(movies.size()==0)
             throw new IndexOutOfBoundsException("You exceeded the maximum number of pages");
         return movies;
     }
 
     public List<Movie> getTopMovies(int page){
-        List<Movie> movies = movieRepository.getTopMovies((page-1)*2);
+        List<Movie> movies = movieRepository.getTopMovies((page-1)*10);
         if(movies.size()==0)
             throw new IndexOutOfBoundsException("You exceeded the maximum number of pages");
         return movies;
@@ -92,7 +91,15 @@ public class MovieService {
 
 
     public ResponseBuilder getFlaggedMovies(){
-        ResponseBuilder<Movie> responseBuilder = new ResponseBuilder(null,movieRepository.getFlaggedMovies());
+
+        List<Movie> movies = movieRepository.getFlaggedMovies();
+
+        ResponseBuilder<FlaggedMovieResponse> responseBuilder = new ResponseBuilder();
+        responseBuilder.setData(movies.stream().
+                map(movie -> new FlaggedMovieResponse(movie.getId(),movie.getName(),movie.getFlaggedUsers()))
+                        .collect(Collectors.toList()));
+        responseBuilder.setError(null);
+
         return responseBuilder;
     }
 

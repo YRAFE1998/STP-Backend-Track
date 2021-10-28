@@ -47,7 +47,7 @@ public class AdminController {
         return movieService.flagMovie(movieId);
     }
 
-    @PutMapping("/movie/edit")
+        @PutMapping("/movie/edit")
     public ResponseBuilder editMovie(@RequestBody MovieEdit movieEdit) throws Exception {
         return movieService.editMovie(movieEdit);
     }

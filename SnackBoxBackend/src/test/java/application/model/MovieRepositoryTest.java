@@ -71,7 +71,7 @@ class MovieRepositoryTest {
     @Test
     void shouldReturnRightMoviesGetMoviesPaginated(){
         List<Movie> movies = movieRepository.getMoviesPaginated(0);
-        assertThat(movies, Is.is(Arrays.asList(m1,m2)));
+        assertThat(movies, Is.is(Arrays.asList(m1,m2,m3)));
     }
 
     @Test
@@ -83,7 +83,7 @@ class MovieRepositoryTest {
         movieRepository.save(m3);
 
         List<Movie> movies = movieRepository.getTopMovies(0);
-        assertThat(movies, Is.is(Arrays.asList(m3,m2)));
+        assertThat(movies, Is.is(Arrays.asList(m3,m2,m1)));
     }
 
     @Disabled

@@ -15,10 +15,10 @@ import java.util.List;
 
 public interface MovieRepository extends JpaRepository<Movie,Long> {
 
-    @Query(nativeQuery = true,value = "SELECT * FROM movies LIMIT :page,2")
+    @Query(nativeQuery = true,value = "SELECT * FROM movies LIMIT :page,10")
     List<Movie> getMoviesPaginated(@Param("page") int page);
 
-    @Query(nativeQuery = true,value = "SELECT * FROM movies ORDER BY rating DESC LIMIT :page,2")
+    @Query(nativeQuery = true,value = "SELECT * FROM movies ORDER BY rating DESC LIMIT :page,10")
     List<Movie> getTopMovies(@Param("page") int page);
 
 
